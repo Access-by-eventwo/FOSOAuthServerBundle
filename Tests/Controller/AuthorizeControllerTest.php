@@ -180,8 +180,7 @@ class AuthorizeControllerTest extends TestCase
             $this->tokenStorage,
             $this->router,
             $this->clientManager,
-            $this->eventDispatcher,
-            $this->session
+            $this->eventDispatcher
         );
 
         /** @var MockObject&Request $request */
@@ -200,6 +199,7 @@ class AuthorizeControllerTest extends TestCase
         $request->query = $this->requestQuery;
         $request->request = $this->requestRequest;
         $this->request = $request;
+
         $this->user = $this->getMockBuilder(UserInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -237,6 +237,12 @@ class AuthorizeControllerTest extends TestCase
             ->expects($this->at(0))
             ->method('getUser')
             ->willReturn($this->user)
+        ;
+
+        $this->requestStack
+            ->expects($this->any())
+            ->method('getSession')
+            ->willReturn($this->session)
         ;
 
         $this->session
@@ -307,6 +313,12 @@ class AuthorizeControllerTest extends TestCase
             ->expects($this->at(0))
             ->method('getUser')
             ->willReturn($this->user)
+        ;
+
+        $this->requestStack
+            ->expects($this->any())
+            ->method('getSession')
+            ->willReturn($this->session)
         ;
 
         $this->session
@@ -396,6 +408,12 @@ class AuthorizeControllerTest extends TestCase
             ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->user)
+        ;
+
+        $this->requestStack
+            ->expects($this->any())
+            ->method('getSession')
+            ->willReturn($this->session)
         ;
 
         $this->session

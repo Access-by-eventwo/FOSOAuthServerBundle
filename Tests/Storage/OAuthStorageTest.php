@@ -29,8 +29,8 @@ use OAuth2\OAuth2ServerException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -52,8 +52,8 @@ class OAuthStorageTest extends TestCase
     /** @var UserProviderInterface | MockObject */
     protected $userProvider;
 
-    /** @var EncoderFactoryInterface | MockObject */
-    protected $encoderFactory;
+    /** @var PasswordHasherFactoryInterface | MockObject */
+    protected $hasherFactory;
 
     /** @var OAuthStorage */
     protected $storage;
@@ -80,7 +80,7 @@ class OAuthStorageTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+        $this->hasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -91,7 +91,7 @@ class OAuthStorageTest extends TestCase
             $this->refreshTokenManager,
             $this->authCodeManager,
             $this->userProvider,
-            $this->encoderFactory
+            $this->hasherFactory
         );
     }
 
@@ -392,12 +392,12 @@ class OAuthStorageTest extends TestCase
         $user->expects($this->once())
             ->method('getSalt')->with()->willReturn('bar');
 
-        $encoder = $this->getMockBuilder(PasswordEncoderInterface::class)
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $encoder->expects($this->once())
-            ->method('isPasswordValid')
+        $hasher->expects($this->once())
+            ->method('verify')
             ->with('foo', 'baz', 'bar')
             ->willReturn(true)
         ;
@@ -408,10 +408,10 @@ class OAuthStorageTest extends TestCase
             ->willReturn($user)
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
+        $this->hasherFactory->expects($this->once())
+            ->method('getPasswordHasher')
             ->with($user)
-            ->willReturn($encoder)
+            ->willReturn($hasher)
         ;
 
         self::assertSame([
@@ -431,12 +431,12 @@ class OAuthStorageTest extends TestCase
         $user->expects($this->once())
             ->method('getSalt')->with()->willReturn('bar');
 
-        $encoder = $this->getMockBuilder(PasswordEncoderInterface::class)
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $encoder->expects($this->once())
-            ->method('isPasswordValid')
+        $hasher->expects($this->once())
+            ->method('verify')
             ->with('foo', 'baz', 'bar')
             ->willReturn(false)
         ;
@@ -447,10 +447,10 @@ class OAuthStorageTest extends TestCase
             ->willReturn($user)
         ;
 
-        $this->encoderFactory->expects($this->once())
-            ->method('getEncoder')
+        $this->hasherFactory->expects($this->once())
+            ->method('getPasswordHasher')
             ->with($user)
-            ->willReturn($encoder)
+            ->willReturn($hasher)
         ;
 
         self::assertFalse($this->storage->checkUserCredentials($client, 'Joe', 'baz'));
@@ -665,5 +665,10 @@ class User implements UserInterface
 
     public function eraseCredentials(): void
     {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->username;
     }
 }
