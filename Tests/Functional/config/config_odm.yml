@@ -26,7 +26,7 @@ fos_oauth_server:
     auth_code_class:     FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\AuthCode
 
 security:
-    encoders:
+    password_hashers:
         FOS\OAuthServerBundle\Tests\Functional\TestBundle\Document\User: plaintext
 
     providers:

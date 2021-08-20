@@ -4,6 +4,7 @@ framework:
     test: true
     router:
         resource: "%kernel.project_dir%/Tests/Functional/config/routing.yml"
+        utf8: true
 
 fos_oauth_server:
 
@@ -15,6 +16,8 @@ monolog:
             level: debug
 
 security:
+    enable_authenticator_manager: true
+
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
@@ -32,3 +35,5 @@ security:
             pattern:    ^/
             fos_oauth:  true
             stateless:  true
+            custom_authenticators:
+                - 'fos_oauth_server.security.authentication.authenticator'
