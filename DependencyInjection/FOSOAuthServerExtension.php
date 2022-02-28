@@ -28,7 +28,7 @@ class FOSOAuthServerExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $processor = new Processor();
         $configuration = new Configuration();
@@ -106,12 +106,12 @@ class FOSOAuthServerExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'fos_oauth_server';
     }
 
-    protected function remapParameters(array $config, ContainerBuilder $container, array $map)
+    protected function remapParameters(array $config, ContainerBuilder $container, array $map): void
     {
         foreach ($map as $name => $paramName) {
             if (array_key_exists($name, $config)) {
@@ -120,7 +120,7 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
+    protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces): void
     {
         foreach ($namespaces as $ns => $map) {
             if ($ns) {
@@ -142,7 +142,7 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader): void
     {
         $loader->load('authorize.xml');
 
@@ -159,7 +159,7 @@ class FOSOAuthServerExtension extends Extension
         ]);
     }
 
-    private function computeArraySupportedScopes(array $supportedScopes)
+    private function computeArraySupportedScopes(array $supportedScopes): string
     {
         foreach ($supportedScopes as $scope) {
             if (false !== mb_strpos($scope, ' ')) {

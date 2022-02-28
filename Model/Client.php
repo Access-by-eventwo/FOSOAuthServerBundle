@@ -59,7 +59,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setRandomId($random)
+    public function setRandomId($random): void
     {
         $this->randomId = $random;
     }
@@ -67,15 +67,15 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getRandomId()
+    public function getRandomId(): string
     {
         return $this->randomId;
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getPublicId()
+    public function getPublicId(): string
     {
         return sprintf('%s_%s', $this->getId(), $this->getRandomId());
     }
@@ -83,7 +83,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setSecret($secret)
+    public function setSecret($secret): void
     {
         $this->secret = $secret;
     }
@@ -91,31 +91,22 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getSecret()
+    public function getSecret(): string
     {
         return $this->secret;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function checkSecret($secret)
+    public function checkSecret($secret): bool
     {
         return null === $this->secret || $secret === $this->secret;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setRedirectUris(array $redirectUris)
+    public function setRedirectUris(array $redirectUris): void
     {
         $this->redirectUris = $redirectUris;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRedirectUris()
+    public function getRedirectUris(): array
     {
         return $this->redirectUris;
     }
@@ -123,7 +114,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function setAllowedGrantTypes(array $grantTypes)
+    public function setAllowedGrantTypes(array $grantTypes): void
     {
         $this->allowedGrantTypes = $grantTypes;
     }
@@ -131,7 +122,7 @@ class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedGrantTypes()
+    public function getAllowedGrantTypes(): array
     {
         return $this->allowedGrantTypes;
     }

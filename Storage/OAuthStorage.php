@@ -27,6 +27,7 @@ use OAuth2\IOAuth2GrantExtension;
 use OAuth2\IOAuth2GrantImplicit;
 use OAuth2\IOAuth2GrantUser;
 use OAuth2\IOAuth2RefreshTokens;
+use OAuth2\Model\IOAuth2AuthCode;
 use OAuth2\Model\IOAuth2Client;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
@@ -98,12 +99,15 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         $this->grantExtensions[$uri] = $grantExtension;
     }
 
-    public function getClient($clientId)
+    /**
+     * @return IOAuth2Client
+     */
+    public function getClient($clientId): IOAuth2Client
     {
         return $this->clientManager->findClientByPublicId($clientId);
     }
 
-    public function checkClientCredentials(IOAuth2Client $client, $client_secret = null)
+    public function checkClientCredentials(IOAuth2Client $client, $client_secret = null): bool
     {
         if (!$client instanceof ClientInterface) {
             throw new InvalidArgumentException('Client has to implement the ClientInterface');
@@ -112,12 +116,12 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $client->checkSecret($client_secret);
     }
 
-    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret)
+    public function checkClientCredentialsGrant(IOAuth2Client $client, $client_secret): bool
     {
         return $this->checkClientCredentials($client, $client_secret);
     }
 
-    public function getAccessToken($token)
+    public function getAccessToken($token): TokenInterface|null
     {
         return $this->accessTokenManager->findTokenByToken($token);
     }
@@ -148,7 +152,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return $token;
     }
 
-    public function checkRestrictedGrantType(IOAuth2Client $client, $grant_type)
+    public function checkRestrictedGrantType(IOAuth2Client $client, $grant_type): bool
     {
         if (!$client instanceof ClientInterface) {
             throw new InvalidArgumentException('Client has to implement the ClientInterface');
@@ -157,7 +161,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         return in_array($grant_type, $client->getAllowedGrantTypes(), true);
     }
 
-    public function checkUserCredentials(IOAuth2Client $client, $username, $password)
+    public function checkUserCredentials(IOAuth2Client $client, $username, $password): bool|array
     {
         if (!$client instanceof ClientInterface) {
             throw new InvalidArgumentException('Client has to implement the ClientInterface');
@@ -182,7 +186,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function getAuthCode($code)
+    public function getAuthCode($code): AuthCodeInterface|null
     {
         return $this->authCodeManager->findAuthCodeByToken($code);
     }
@@ -217,7 +221,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function getRefreshToken($tokenString)
+    public function getRefreshToken($tokenString): TokenInterface|null
     {
         return $this->refreshTokenManager->findTokenByToken($tokenString);
     }
@@ -249,7 +253,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function unsetRefreshToken($tokenString)
+    public function unsetRefreshToken($tokenString): void
     {
         $token = $this->refreshTokenManager->findTokenByToken($tokenString);
 
@@ -261,7 +265,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders)
+    public function checkGrantExtension(IOAuth2Client $client, $uri, array $inputData, array $authHeaders): bool|array
     {
         if (!isset($this->grantExtensions[$uri])) {
             throw new OAuth2ServerException(Response::HTTP_BAD_REQUEST, OAuth2::ERROR_UNSUPPORTED_GRANT_TYPE);
@@ -275,7 +279,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     /**
      * {@inheritdoc}
      */
-    public function markAuthCodeAsUsed($code)
+    public function markAuthCodeAsUsed($code): void
     {
         $authCode = $this->authCodeManager->findAuthCodeByToken($code);
         if (null !== $authCode) {

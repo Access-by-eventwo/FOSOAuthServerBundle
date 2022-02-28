@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  */
-class OAuthFactory implements SecurityFactoryInterface, AuthenticatorFactoryInterface
+class OAuthFactory implements AuthenticatorFactoryInterface
 {
     /**
      * {@inheritdoc}
@@ -83,7 +83,7 @@ class OAuthFactory implements SecurityFactoryInterface, AuthenticatorFactoryInte
         string $firewallName,
         array $config,
         string $userProviderId
-    ) {
+    ): string|array {
         $authenticatorId = 'security.authenticator.oauth2.'.$firewallName;
         $firewallEventDispatcherId = 'security.event_dispatcher.'.$firewallName;
 
@@ -141,5 +141,10 @@ class OAuthFactory implements SecurityFactoryInterface, AuthenticatorFactoryInte
         }
 
         return $authenticatorId;
+    }
+
+    public function getPriority(): int
+    {
+        return 0;
     }
 }

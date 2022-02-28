@@ -3,6 +3,7 @@
 namespace FOS\OAuthServerBundle\Security\Authentication\Authenticator;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
+use FOS\OAuthServerBundle\Security\Core\User\OAuthUser;
 use OAuth2\OAuth2;
 use OAuth2\OAuth2AuthenticateException;
 use OAuth2\OAuth2ServerException;
@@ -13,6 +14,7 @@ use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PreAuthenticatedUserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -79,7 +81,6 @@ class OauthAuthenticator extends AbstractAuthenticator
             $roles = array_unique($roles, SORT_REGULAR);
 
             $token = new OAuthToken($roles);
-            $token->setAuthenticated(true);
             $token->setToken($tokenString);
 
             if (null !== $user) {
@@ -98,7 +99,22 @@ class OauthAuthenticator extends AbstractAuthenticator
                 $token->setUser($user);
             }
 
-            return new OauthPassport($token);
+            if (null === $user) {
+                $user = new OAuthUser($tokenString);
+                $user->setRoles($roles);
+
+                $token->setUser($user);
+            }
+
+            $passport = new OauthPassport(
+                new UserBadge($tokenString),
+                [
+                    new PreAuthenticatedUserBadge()
+                ]
+            );
+            $passport->setAttribute(OauthPassport::ATTRIBUTE_OAUTH_TOKEN, $token);
+
+            return $passport;
         } catch (OAuth2ServerException $e) {
             throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
         }
