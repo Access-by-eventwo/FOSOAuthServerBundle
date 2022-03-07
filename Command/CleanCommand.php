@@ -64,7 +64,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ([$this->accessTokenManager, $this->refreshTokenManager, $this->authCodeManager] as $service) {
             $result = $service->deleteExpired();

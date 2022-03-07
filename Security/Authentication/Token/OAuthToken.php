@@ -27,18 +27,23 @@ class OAuthToken extends AbstractToken
      */
     protected $token;
 
-    public function setToken($token)
+    public function setToken($token): void
     {
         $this->token = $token;
     }
 
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->token;
     }
 
-    public function getCredentials()
+    public function getCredentials(): mixed
     {
         return $this->token;
+    }
+
+    public function isAuthenticated(): bool
+    {
+        return true;
     }
 }
