@@ -100,9 +100,9 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
     }
 
     /**
-     * @return IOAuth2Client
+     * @return ?IOAuth2Client
      */
-    public function getClient($clientId): IOAuth2Client
+    public function getClient($clientId): ?IOAuth2Client
     {
         return $this->clientManager->findClientByPublicId($clientId);
     }
