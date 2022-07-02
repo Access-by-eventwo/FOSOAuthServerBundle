@@ -19,9 +19,15 @@
       "homepage": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle/contributors"
     }
   ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/Access-by-eventwo/oauth2-php.git"
+    }
+  ],
   "require": {
     "php": "^7.2 || ^8.0",
-    "friendsofsymfony/oauth2-php": "~1.1",
+    "friendsofsymfony/oauth2-php": "dev-symfony-6-compatibility",
     "symfony/dependency-injection": "^4.4 || ^5.1 || ^6.0 ",
     "symfony/framework-bundle": "^4.4 || ^5.1 || ^6.0",
     "symfony/security-bundle": "^4.4 || ^5.1 || ^6.0",
