@@ -27,7 +27,7 @@
   ],
   "require": {
     "php": "^7.2 || ^8.0",
-    "friendsofsymfony/oauth2-php": "dev-symfony-6-compatibility",
+    "friendsofsymfony/oauth2-php": "dev-maintenance",
     "symfony/dependency-injection": "^4.4 || ^5.1 || ^6.0 ",
     "symfony/framework-bundle": "^4.4 || ^5.1 || ^6.0",
     "symfony/security-bundle": "^4.4 || ^5.1 || ^6.0",
