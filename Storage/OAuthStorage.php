@@ -168,7 +168,7 @@ class OAuthStorage implements IOAuth2RefreshTokens, IOAuth2GrantUser, IOAuth2Gra
         }
 
         try {
-            $user = $this->userProvider->loadUserByUsername($username);
+            $user = $this->userProvider->loadUserByIdentifier($username);
         } catch (AuthenticationException $e) {
             return false;
         }
