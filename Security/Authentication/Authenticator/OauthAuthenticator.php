@@ -16,10 +16,7 @@ use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PreAuthenticatedUserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
 class OauthAuthenticator extends AbstractAuthenticator
 {
@@ -44,7 +41,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         return true;
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): Passport
     {
         try {
             $tokenString = $this->serverService->getBearerToken($request, true);
@@ -107,7 +104,7 @@ class OauthAuthenticator extends AbstractAuthenticator
             }
 
             $passport = new OauthPassport(
-                new UserBadge($tokenString),
+                new UserBadge($tokenString, fn() => $user),
                 [
                     new PreAuthenticatedUserBadge()
                 ]
@@ -130,10 +127,10 @@ class OauthAuthenticator extends AbstractAuthenticator
         return null;
     }
 
-    public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface
+    public function createAuthenticatedToken(Passport $passport, string $firewallName): TokenInterface
     {
         if (false === $passport instanceof OauthPassport) {
-            throw new AuthenticationException('OAuth2 authentication failed', 0, $e);
+            throw new AuthenticationException('OAuth2 authentication failed');
         }
 
         return $passport->getOauthToken();

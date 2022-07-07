@@ -370,7 +370,7 @@ class OAuthStorageTest extends TestCase
 
         $this->userProvider
             ->expects(self::once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willThrowException(new AuthenticationException('No such user'))
         ;
@@ -403,7 +403,7 @@ class OAuthStorageTest extends TestCase
         ;
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willReturn($user)
         ;
@@ -442,7 +442,7 @@ class OAuthStorageTest extends TestCase
         ;
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willReturn($user)
         ;
@@ -461,7 +461,7 @@ class OAuthStorageTest extends TestCase
         $client = new Client();
 
         $this->userProvider->expects($this->once())
-            ->method('loadUserByUsername')
+            ->method('loadUserByIdentifier')
             ->with('Joe')
             ->willThrowException(new AuthenticationException('No such user'))
         ;
