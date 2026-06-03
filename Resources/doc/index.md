@@ -525,10 +525,10 @@ Import the routing.yml configuration file in app/config/routing.yml:
 ``` yaml
 # app/config/routing.yml
 fos_oauth_server_token:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.yaml"
 
 fos_oauth_server_authorize:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.yaml"
 ```
 
 Add FOSOAuthServerBundle settings in app/config/config.yml:
@@ -602,9 +602,9 @@ return $this->redirect($this->generateUrl('fos_oauth_server_authorize', array(
 
 ## Usage
 
-The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.xml`).
+The `token` endpoint is at `/oauth/v2/token` by default (see `Resources/config/routing/token.yaml`).
 
-The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/config/routing/authorize.xml`).
+The `authorize` endpoint is at `/oauth/v2/auth` by default (see `Resources/config/routing/authorize.yaml`).
 
 
 ## Next steps
