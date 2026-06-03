@@ -1,0 +1,40 @@
+services:
+    fos_oauth_server.client_manager.default:
+        class: 'FOS\OAuthServerBundle\CouchDocument\ClientManager'
+        arguments:
+            - '@fos_oauth_server.document_manager'
+            - '%fos_oauth_server.model.client.class%'
+
+    fos_oauth_server.access_token_manager.default:
+        class: 'FOS\OAuthServerBundle\CouchDocument\AccessTokenManager'
+        arguments:
+            - '@fos_oauth_server.document_manager'
+            - '%fos_oauth_server.model.access_token.class%'
+
+    fos_oauth_server.auth_code_manager.default:
+        class: 'FOS\OAuthServerBundle\CouchDocument\AuthCodeManager'
+        arguments:
+            - '@fos_oauth_server.document_manager'
+            - '%fos_oauth_server.model.auth_code.class%'
+
+    fos_oauth_server.refresh_token_manager.default:
+        class: 'FOS\OAuthServerBundle\CouchDocument\RefreshTokenManager'
+        arguments:
+            - '@fos_oauth_server.document_manager'
+            - '%fos_oauth_server.model.refresh_token.class%'
+
+    fos_user.document_manager:
+        class: 'Doctrine\ODM\CouchDB\DocumentManager'
+        public: false
+        factory: ['@doctrine_couchdb', getObjectManager]
+        arguments:
+            - '%fos_oauth_server.model_manager_name%'
+
+    'FOS\OAuthServerBundle\Model\ClientManagerInterface':
+        alias: 'fos_oauth_server.client_manager.default'
+    'FOS\OAuthServerBundle\Model\AccessTokenManagerInterface':
+        alias: 'fos_oauth_server.access_token_manager.default'
+    'FOS\OAuthServerBundle\Model\RefreshTokenManagerInterface':
+        alias: 'fos_oauth_server.refresh_token_manager.default'
+    'FOS\OAuthServerBundle\Model\AuthCodeManagerInterface':
+        alias: 'fos_oauth_server.auth_code_manager.default'
