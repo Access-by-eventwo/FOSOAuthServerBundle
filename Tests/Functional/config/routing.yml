@@ -1,4 +1,4 @@
 fos_oauth_server_token:
-    resource: '@FOSOAuthServerBundle/Resources/config/routing/token.xml'
+    resource: '@FOSOAuthServerBundle/Resources/config/routing/token.yaml'
 fos_oauth_server_authorize:
-    resource: '@FOSOAuthServerBundle/Resources/config/routing/authorize.xml'
+    resource: '@FOSOAuthServerBundle/Resources/config/routing/authorize.yaml'

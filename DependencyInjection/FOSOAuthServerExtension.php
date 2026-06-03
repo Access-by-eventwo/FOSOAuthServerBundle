@@ -19,9 +19,9 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class FOSOAuthServerExtension extends Extension
 {
@@ -35,14 +35,14 @@ class FOSOAuthServerExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         if ('custom' !== $config['db_driver']) {
-            $loader->load(sprintf('%s.xml', $config['db_driver']));
+            $loader->load(sprintf('%s.yaml', $config['db_driver']));
         }
 
         foreach (['oauth', 'security'] as $basename) {
-            $loader->load(sprintf('%s.xml', $basename));
+            $loader->load(sprintf('%s.yaml', $basename));
         }
 
         $container->setAlias('fos_oauth_server.storage', $config['service']['storage']);
@@ -142,9 +142,9 @@ class FOSOAuthServerExtension extends Extension
         }
     }
 
-    protected function loadAuthorize(array $config, ContainerBuilder $container, XmlFileLoader $loader): void
+    protected function loadAuthorize(array $config, ContainerBuilder $container, YamlFileLoader $loader): void
     {
-        $loader->load('authorize.xml');
+        $loader->load('authorize.yaml');
 
         $container->setAlias('fos_oauth_server.authorize.form.handler', $config['form']['handler']);
         unset($config['form']['handler']);
