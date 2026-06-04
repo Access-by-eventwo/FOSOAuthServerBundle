@@ -1,0 +1,6 @@
+'FOS\OAuthServerBundle\Form\Model\Authorize':
+    properties:
+        accepted:
+            - Type:
+                  type: bool
+                  groups: [Authorize]

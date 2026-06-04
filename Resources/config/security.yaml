@@ -1,0 +1,26 @@
+parameters:
+    fos_oauth_server.security.authentication.authenticator.class: 'FOS\OAuthServerBundle\Security\Authentication\Authenticator\OauthAuthenticator'
+    fos_oauth_server.security.authentication.listener.class: 'FOS\OAuthServerBundle\Security\Firewall\OAuthListener'
+    fos_oauth_server.security.entry_point.class: 'FOS\OAuthServerBundle\Security\EntryPoint\OAuthEntryPoint'
+
+services:
+    fos_oauth_server.security.authentication.authenticator:
+        class: '%fos_oauth_server.security.authentication.authenticator.class%'
+        public: false
+        arguments:
+            - '@fos_oauth_server.server'
+            - '@security.user_checker'
+
+    fos_oauth_server.security.authentication.listener:
+        class: '%fos_oauth_server.security.authentication.listener.class%'
+        public: false
+        arguments:
+            - '@security.token_storage'
+            - '@security.authentication.manager'
+            - '@fos_oauth_server.server'
+
+    fos_oauth_server.security.entry_point:
+        class: '%fos_oauth_server.security.entry_point.class%'
+        public: false
+        arguments:
+            - '@fos_oauth_server.server'

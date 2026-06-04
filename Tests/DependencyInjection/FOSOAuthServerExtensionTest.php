@@ -22,7 +22,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\Routing\Loader\XmlFileLoader;
+use Symfony\Component\Routing\Loader\YamlFileLoader;
 
 class FOSOAuthServerExtensionTest extends TestCase
 {
@@ -99,9 +99,9 @@ class FOSOAuthServerExtensionTest extends TestCase
     public function testLoadAuthorizeRouting(): void
     {
         $locator = new FileLocator();
-        $loader = new XmlFileLoader($locator);
+        $loader = new YamlFileLoader($locator);
 
-        $collection = $loader->load(__DIR__.'/../../Resources/config/routing/authorize.xml');
+        $collection = $loader->load(__DIR__.'/../../Resources/config/routing/authorize.yaml');
         $authorizeRoute = $collection->get('fos_oauth_server_authorize');
         self::assertSame('/oauth/v2/auth', $authorizeRoute->getPath());
         self::assertSame(['GET', 'POST'], $authorizeRoute->getMethods());
@@ -110,9 +110,9 @@ class FOSOAuthServerExtensionTest extends TestCase
     public function testLoadTokenRouting(): void
     {
         $locator = new FileLocator();
-        $loader = new XmlFileLoader($locator);
+        $loader = new YamlFileLoader($locator);
 
-        $collection = $loader->load(__DIR__.'/../../Resources/config/routing/token.xml');
+        $collection = $loader->load(__DIR__.'/../../Resources/config/routing/token.yaml');
         $tokenRoute = $collection->get('fos_oauth_server_token');
         self::assertSame('/oauth/v2/token', $tokenRoute->getPath());
         self::assertSame(['GET', 'POST'], $tokenRoute->getMethods());

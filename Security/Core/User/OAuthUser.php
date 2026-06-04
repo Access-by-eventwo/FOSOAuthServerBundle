@@ -39,6 +39,7 @@ class OAuthUser implements UserInterface
         return null;
     }
 
+    #[\Deprecated(since: 'symfony/security-core 7.3')]
     public function eraseCredentials(): void
     {
     }
