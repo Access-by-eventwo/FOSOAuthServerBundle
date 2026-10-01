@@ -39,7 +39,7 @@
   "require-dev": {
     "doctrine/doctrine-bundle": "^2.0",
     "doctrine/mongodb-odm": "^2.2",
-    "doctrine/orm": "~3.7.2",
+    "doctrine/orm": "^3.0",
     "phing/phing": "~2.4",
     "php-mock/php-mock-phpunit": "~1.0 || ~2.0",
     "phpstan/phpstan": "^0.12",
