@@ -89,7 +89,7 @@ class TokenManager extends BaseTokenManager
         $qb
             ->delete()
             ->where('t.expiresAt < ?1')
-            ->setParameters([1 => time()])
+            ->setParameter(1, time())
         ;
 
         return $qb->getQuery()->execute();
